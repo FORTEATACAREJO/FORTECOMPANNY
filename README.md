@@ -1,6 +1,8 @@
-# FORTECOMPANNY — Consulta Inteligente de CFOP
+# FORTECOMPANNY+ IA — Consulta Inteligente de CFOP
 
 Sistema próprio para consultas fiscais de compras e vendas, classificação NCM/CEST, pré-nota fiscal, consulta de XML e apoio à identificação de CFOP, começando por MG e GO.
+
+**Nome público:** FORTECOMPANNY+ IA. A assinatura mensal terá preço definido posteriormente; nenhuma cobrança está habilitada. A IA está em preparação e não é utilizada para gerar conclusões fiscais nesta versão.
 
 ## Aplicação e validação
 

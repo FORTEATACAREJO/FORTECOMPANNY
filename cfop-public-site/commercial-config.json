@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "productCode": "FORTECOMPANNY",
+  "displayName": "FORTECOMPANNY+ IA",
+  "subscription": {
+    "billingPeriod": "monthly",
+    "priceBRL": null,
+    "currency": "BRL",
+    "pricingStatus": "a_definir",
+    "contractingEnabled": false,
+    "checkoutEnabled": false,
+    "automaticRenewalEnabled": false
+  },
+  "ai": {
+    "featureStatus": "em_preparacao",
+    "inferenceEnabled": false,
+    "providerConfigured": false,
+    "planSharingEnabled": false
+  },
+  "tax": {
+    "fiscalClassificationStatus": "experimental_nao_homologado",
+    "sefazIssuanceEnabled": false
+  },
+  "notice": "O preço, os limites de uso, a oferta de IA e as condições comerciais serão definidos e aprovados antes de qualquer contratação."
+}

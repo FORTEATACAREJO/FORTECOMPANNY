@@ -1,4 +1,4 @@
-# FORTECOMPANNY — Consulta Fiscal
+# FORTECOMPANNY+ IA — Consulta Fiscal
 
 **Nome anterior do aplicativo:** FORTE TECH — Consulta de CFOP. A mudança é apenas de marca, preservando o funcionamento e a infraestrutura.
 
@@ -23,7 +23,7 @@ Implantação: branch `deploy/forte-tech-cfop-publico-20261112`; publishPath `cf
 ## Importação local de XML da NF-e e consulta legal (13/11/2026)
 
 - O `assistente.html` agora aceita **XML de NF-e do próprio usuário até 6 MB** na etapa 3, com itens selecionáveis. Leitor do navegador: `xml-nfe-local.js`.
-- O arquivo **não é transmitido à FORTECOMPANNY**. É inspecionado localmente para recuperar descrição, NCM, CEST, CFOP e campos de ICMS, ICMS-ST (inclusive retido anteriormente), IPI, PIS, COFINS, IBS/CBS, GTIN e benefício fiscal, quando disponíveis. Não se extrai CNPJ/CPF, valores totais ou outros dados pessoais para as estatísticas.
+- O arquivo **não é transmitido à FORTECOMPANNY+ IA**. É inspecionado localmente para recuperar descrição, NCM, CEST, CFOP e campos de ICMS, ICMS-ST (inclusive retido anteriormente), IPI, PIS, COFINS, IBS/CBS, GTIN e benefício fiscal, quando disponíveis. Não se extrai CNPJ/CPF, valores totais ou outros dados pessoais para as estatísticas.
 - Se XML foi selecionado, a consulta não é registrada no endpoint de métricas, mesmo após edição. Apenas o NCM de 8 dígitos pode ser conferido no serviço público `cfop-ncm`.
 - XML local **não tem autenticidade nem assinatura digital validada**. Dados fiscais de uma nota anterior são evidências do documento e não cálculo da nova compra/venda.
 - A ficha fiscal oferece links oficiais de MG e GO para consulta da legislação de ST, mas **não determina automaticamente** MVA/PMPF/pauta/alíquotas e não declara o projeto homologado.
@@ -31,15 +31,15 @@ Implantação: branch `deploy/forte-tech-cfop-publico-20261112`; publishPath `cf
 
 ## Marca e apresentação do aplicativo
 
-- Nome comercial e PWA: **FORTECOMPANNY** (grafia aprovada em 13/11/2026).
+- Nome comercial e PWA: **FORTECOMPANNY+ IA** (grafia aprovada em 13/11/2026).
 - Aplicação: consulta fiscal orientativa (NCM, CEST, CFOP e dados tributários), sem homologação de emissão.
 - Identificadores técnicos existentes, URL pública, branch, Supabase e serviço Render são mantidos para preservar integrações e histórico.
 - A indicação da pessoa jurídica responsável nos termos de uso é independente da marca comercial do aplicativo.
 
 ## Implementação do ícone aprovado e verificações fiscais (13/11/2026)
 
-- Identidade visual: `icon.svg` é a adaptação **vetorial otimizada** do conceito visual aprovado para a FORTECOMPANNY; `icon-maskable.svg` é a adaptação simplificada para a área segura dos atalhos Android.
-- `manifest.json` declara as versões `any` e `maskable` em SVG, mantendo a identificação PWA existente e o nome curto **FORTECOMPANNY**.
+- Identidade visual: `icon.svg` é a adaptação **vetorial otimizada** do conceito visual aprovado para a FORTECOMPANNY+ IA; `icon-maskable.svg` é a adaptação simplificada para a área segura dos atalhos Android.
+- `manifest.json` declara as versões `any` e `maskable` em SVG, mantendo a identificação PWA existente e o nome curto **FORTECOMPANNY+ IA**.
 - O `sw.js` incrementa o cache para `fortecompanny-v4`, preservando abordagem network-first e incluindo as duas versões de ícone.
 - A consulta em `assistente.html` agora valida assincronamente o NCM de 8 dígitos junto à versão oficial RFB (existência e datas do registro) e cruza o CEST informado com os possíveis vínculos da compilação CEST por NCM/SH. **Não** atribui validade fiscal definitiva pela existência de um código.
 - Se o vínculo NCM–CEST não estiver na compilação, a tela avisa que isso **não comprova** inexistência de CEST ou ST.
@@ -63,3 +63,10 @@ Rota pública: **`/consulta-nfe.html`**, disponível na página inicial de `http
 - Fontes estruturais: Portal NF-e, manual de orientação da NF-e e convênio SINIEF s/n, Receita Federal (Classif NCM), CONFAZ 142/18, RICMS MG 2023 e legislação GO.
 - Acesso antigo por `/assistente.html` e simulador da página inicial continuam funcionando, preservando o histórico. Não alterar FORTE FISCAL nem sistemas da matriz/filial.
 - **Pendente:** integrar provedores cadastrais gratuitos se ativados, versão e vigência tributária MG/GO, ST/MVA/PMPF/pauta e homologação completa de CST/CSOSN, ICMS, PIS/COFINS, IBS/CBS/cClassTrib.
+
+## Nome comercial e assinatura (14/11/2026)
+
+- Nome público: **FORTECOMPANNY+ IA**. O identificador técnico `FORTECOMPANNY`, domínio e repositório permanecem estáveis para preservar integrações existentes.
+- Plano previsto: **assinatura mensal**, preço **a definir**. Configuração em `commercial-config.json` com `priceBRL: null`, contratação e checkout desativados.
+- O sufixo **+ IA** representa o posicionamento planejado, **não** a existência de inferência de IA ativa. Sugestões fiscais atuais permanecem orientativas, sem homologação SEFAZ.
+- Não criar cobrança, cotas, chaves ou fornecedor de IA sem aprovação comercial e testes.

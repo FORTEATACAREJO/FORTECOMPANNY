@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "name": "FORTECOMPANNY — Consulta Fiscal",
-  "short_name": "FORTECOMPANNY",
+  "name": "FORTECOMPANNY+ IA — Consulta Fiscal",
+  "short_name": "FORTECOMPANNY+ IA",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -9,17 +9,17 @@
   "theme_color": "#102640",
   "icons": [
     {
-      "src": "/icon.svg?v=fortecompanny2",
+      "src": "/icon.svg?v=fortecompanny-ia1",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "/icon-maskable.svg?v=fortecompanny2",
+      "src": "/icon-maskable.svg?v=fortecompanny-ia1",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"
     }
   ],
-  "description": "Consulta inteligente de NCM, CEST, CFOP e informações fiscais."
+  "description": "Consulta fiscal assistida de CFOP, NCM e CEST; funcionalidades de IA em preparação."
 }
