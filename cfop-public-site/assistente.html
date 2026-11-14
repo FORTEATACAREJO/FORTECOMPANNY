@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102640"><title>Assistente fiscal | FORTECOMPANNY</title><meta name="application-name" content="FORTECOMPANNY"><meta name="apple-mobile-web-app-title" content="FORTECOMPANNY">
+<link rel="icon" href="/icon.svg?v=fortecompanny2" type="image/svg+xml"><link rel="manifest" href="/manifest.json?v=fortecompanny2"><script src="/classificacao.js"></script><script src="/xml-nfe-local.js"></script>
+<style>
+:root{font-family:system-ui,-apple-system,Arial,sans-serif;color:#152b42;background:#f3f5f9}
+*{box-sizing:border-box}body{margin:0}header{background:#102640;color:white;padding:16px max(16px,calc((100% - 870px)/2));display:flex;gap:12px;align-items:center}
+header img{width:44px;height:44px}header strong{font-size:18px}header small{display:block;color:#d8dce4}
+main{max-width:870px;margin:20px auto;padding:0 14px 30px}h1{font-size:clamp(23px,4vw,30px);letter-spacing:-.5px;margin:6px 0 8px}h2{font-size:19px;margin:0 0 9px}p{line-height:1.55;color:#53647a;font-size:14px}
+.card{padding:20px;background:white;border:1px solid #dce3ec;border-radius:15px;margin-bottom:14px;box-shadow:0 6px 25px rgba(16,38,64,.04)}
+.progress{display:flex;gap:6px;margin:16px 0}.progress span{flex:1;background:#dce4ed;height:6px;border-radius:6px}.progress span.on{background:#c39a43}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:13px;font-weight:700;color:#314862}
+.field input,.field select{height:46px;border:1px solid #c9d3df;border-radius:10px;font:inherit;padding:10px;color:#203653;width:100%;background:white}
+.field input:focus,.field select:focus{outline:2px solid #b58a36}
+.full{grid-column:1/-1}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}
+.choice{border:1px solid #ced7e2;background:white;border-radius:12px;padding:14px 8px;cursor:pointer;font-weight:700;color:#2b4864;min-height:70px;text-align:center}
+.choice.selected{border:2px solid #ba8c37;background:#fff8e8}
+button{font:inherit;font-weight:700;cursor:pointer;padding:12px 16px;border-radius:11px;border:1px solid #cbd5e1;background:white;color:#173350}
+button.primary{background:#102640;color:white;border:0}button.gold{background:#d5aa4d;color:#102640;border:0}button:disabled{opacity:.45;cursor:not-allowed}
+.actions{display:flex;gap:10px;justify-content:space-between;margin-top:20px}.actions button{flex:1}
+.pill{font-size:12px;border-radius:20px;padding:5px 9px;background:#f0f4f8;color:#586e84;display:inline-block;margin:2px 5px 2px 0}
+.warning{border:1px solid #e7d9b6;background:#fff9ea;border-radius:11px;padding:12px;color:#654e1a;font-size:13px;line-height:1.6}
+.good{border-color:#bddcc9;background:#f2faf5;color:#296144}
+.lookup-controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}.lookup-controls button{flex:1;min-width:210px}.lookup-result{border:1px solid #b9d6c4;background:#f2faf5;color:#214a33;border-radius:10px;font-size:13px;line-height:1.55;padding:12px;margin-top:10px;white-space:pre-line}.hidden{display:none!important}.check{display:flex;gap:10px;align-items:start;font-size:13px;margin:12px 0;line-height:1.5}.check input{width:18px;height:18px;flex:none;margin-top:3px;accent-color:#102640}
+a{color:#976b22}small{font-size:12px;color:#6b7d90}.divider{height:1px;background:#e7ecf2;margin:17px 0}
+#msg{color:#8a2a19;font-size:13px;margin-top:12px}
+.two{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.two>div:first-child{flex:1}
+summary{cursor:pointer;font-weight:700}.fiscal-dossier{display:grid;gap:14px;margin:13px 0}.fiscal-group{border:1px solid #dce4ee;border-radius:12px;overflow:hidden;background:#fff}.fiscal-group h3{background:#f4f7fb;padding:12px 14px;font-size:15px;margin:0;color:#173550}.fiscal-data{width:100%;border-collapse:collapse;font-size:13px}.fiscal-data td{padding:9px 12px;border-top:1px solid #edf0f3;vertical-align:top;line-height:1.48}.fiscal-data td:first-child{width:39%;font-weight:650;color:#385068}.fiscal-sub{display:block;color:#697e90;font-size:11px;margin-top:3px}.fiscal-status{display:inline-block;border-radius:14px;padding:3px 8px;font-size:11px;background:#e8edf4;color:#52657c;font-weight:700;margin-bottom:2px}.fiscal-status.known{background:#e9f5ee;color:#246943}.fiscal-status.hypothesis{background:#fff3d9;color:#8c601a}.fiscal-lead{padding:15px;background:#f7f9fb;border-radius:13px;margin-bottom:14px;font-size:13px;line-height:1.6}.fiscal-lead strong{font-size:16px;color:#102640}.fiscal-audit{margin-top:17px}.fiscal-audit summary{padding:11px 0}.table{width:100%;border-collapse:collapse;font-size:14px}td{padding:10px 6px;border-bottom:1px solid #e5e9ef;vertical-align:top}td:first-child{width:37%;color:#667a90}
+footer{text-align:center;color:#8392a3;font-size:12px;padding:15px}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.choices{grid-template-columns:1fr}.card{padding:16px}.actions{flex-direction:column}}
+@media print{
+ body{background:#fff;color:#111;font:11px Arial,sans-serif}
+ header,footer,.actions,#msg,.fiscal-audit,#legacy,#printDossier{display:none!important}
+ main{max-width:none!important;margin:0!important;padding:0!important}
+ #step0,#step1,#step2,#step3{display:none!important}
+ #step4{display:block!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0!important}
+ #step4 h2{margin:0 0 6px!important}
+ .fiscal-group{page-break-inside:avoid;break-inside:avoid;border:1px solid #aaa!important}
+ .fiscal-group h3{padding:8px!important;color:#111!important}
+ .fiscal-data td{padding:6px!important}
+ .fiscal-lead,.warning{background:#fff!important}
+ a{color:#111!important}
+}
+</style></head>
+<body><header><img src="/icon.svg" alt=""><div><strong>FORTECOMPANNY</strong><small>Assistente de consulta fiscal • versão experimental</small></div></header>
+<main><div class="two"><div><h1>Consulta fiscal em quatro passos</h1><p>Responda apenas o que você sabe. O sistema identifica o que falta confirmar em fontes oficiais, sem adivinhar impostos.</p><p><a href="/consulta-nfe.html" style="display:inline-block;background:#102640;color:white;padding:10px 13px;margin-top:8px;border-radius:10px;text-decoration:none;font-weight:700">🧾 Nova consulta no formato de nota fiscal</a></p></div><a href="/">Consulta tradicional</a></div>
+<div class="card" id="step0">
+<h2 style="font-size:clamp(22px,5vw,29px);line-height:1.3">Você deseja comprar mercadorias ou vender mercadorias?</h2>
+<p>Escolha o que você quer fazer. Depois, vamos pedir apenas as informações necessárias para sua operação.</p>
+<div class="choices" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+<button type="button" class="choice" data-entry-operation="entrada" style="min-height:115px;font-size:17px">🛒<span style="display:block;margin-top:9px">Comprar mercadorias</span><small style="display:block;margin-top:4px;font-weight:400">Consulta de entrada</small></button>
+<button type="button" class="choice" data-entry-operation="saida" style="min-height:115px;font-size:17px">🚚<span style="display:block;margin-top:9px">Vender mercadorias</span><small style="display:block;margin-top:4px;font-weight:400">Consulta de saída</small></button>
+</div></div>
+<div class="progress hidden" id="prog"><span class="on"></span><span></span><span></span><span></span></div>
+<div class="card hidden" id="step1"><h2>1. Quem está fazendo a consulta?</h2><p>Uma vez identificado, você poderá reutilizar o cadastro no mesmo aparelho. Digitar documento não comprova titularidade.</p>
+<div class="choices">
+<button type="button" class="choice selected" data-profile="company">🏢 Empresa com CNPJ</button>
+<button type="button" class="choice" data-profile="rural">🌾 Produtor rural com CPF e IE</button>
+<button type="button" class="choice" data-profile="person">👤 Pessoa física</button>
+</div>
+<div class="grid">
+<div class="field" id="idCnpj"><label for="ownCnpj">CNPJ da empresa</label><input id="ownCnpj" placeholder="CNPJ numérico ou alfanumérico" autocomplete="off"></div>
+<div class="field hidden" id="idCpf"><label for="ownCpf">CPF</label><input id="ownCpf" inputmode="numeric" placeholder="000.000.000-00" autocomplete="off"></div>
+<div class="field hidden" id="idIe"><label for="ownIe">Inscrição estadual do produtor</label><input id="ownIe" placeholder="Número da inscrição estadual" autocomplete="off"></div>
+<div class="field hidden" id="idUf"><label for="ownUf">UF da inscrição estadual</label><select id="ownUf"></select></div>
+<div class="field full"><label for="ownName">Nome da empresa ou produtor (opcional)</label><input id="ownName" placeholder="Nome / razão social" maxlength="120" autocomplete="off"></div>
+</div>
+<div class="lookup-controls" id="ownLookupControls">
+<button type="button" id="lookupOwn" class="primary">Buscar cadastro automaticamente</button>
+<label id="ownIncludeIeWrap" class="check" style="margin:0"><input id="ownIncludeIe" type="checkbox"><span>Consultar também IE do CNPJ (usa cota gratuita)</span></label>
+</div>
+<label class="check hidden" id="ownRuralConsentWrap"><input id="ownRuralConsent" type="checkbox"><span>Autorizo o envio deste CPF e UF à SintegrAPI para consultar o cadastro estadual do produtor rural. Essa consulta pode ser registrada e armazenada temporariamente pelo provedor.</span></label>
+<div class="warning" id="ownStatus" role="status">A busca automática depende da ativação das credenciais gratuitas. O cadastro pode continuar manualmente enquanto não houver consulta disponível.</div>
+<div class="field hidden" id="ownRegistrationsWrap"><label for="ownRegistrations">Escolha a inscrição estadual consultada</label><select id="ownRegistrations"></select></div>
+<details style="margin-top:12px"><summary>Consultar dados em fontes oficiais</summary><p>Use as consultas oficiais abaixo. Alguns portais exigem CAPTCHA e não permitem preenchimento automático por esta versão.</p>
+<p><a href="https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/" target="_blank" rel="noopener">Receita Federal — CNPJ</a> · <a href="https://www8.receita.fazenda.gov.br/SimplesNacional/" target="_blank" rel="noopener">Simples Nacional</a> · <a href="https://www.fazenda.mg.gov.br/empresas/Cadastro/cadastro/consultapublica.html" target="_blank" rel="noopener">Sintegra MG</a> · <a href="https://appasp.sefaz.go.gov.br/Sintegra/Consulta/default.html" target="_blank" rel="noopener">Sintegra GO</a></p></details>
+<label class="check"><input id="accept" type="checkbox"><span>Li e aceito os <a href="/privacidade.html" target="_blank" rel="noopener">termos e o aviso de privacidade</a> para usar a consulta.</span></label>
+<label class="check"><input id="insights" type="checkbox"><span>Autorizo opcionalmente vincular os assuntos pesquisados ao CNPJ da empresa, quando aplicável.</span></label>
+<div class="actions"><button id="backToChoice" type="button">Alterar compra ou venda</button><button class="gold" id="saveOwn" type="button">Salvar e continuar</button></div></div>
+<div class="card hidden" id="step2"><h2 id="counterpartyTitle">2. De quem você está comprando?</h2>
+<p id="otherHelp">Identifique o fornecedor. Ele pode ser empresa, produtor rural ou pessoa física.</p>
+<p style="font-weight:700;color:#243f58;margin-top:12px">Qual é o tipo do <span id="otherRole">fornecedor</span>?</p>
+<div class="choices" id="counterpartyKinds">
+<button type="button" class="choice selected" data-other-kind="company">🏢 Empresa com CNPJ</button>
+<button type="button" class="choice" data-other-kind="rural">🌾 Produtor rural — CPF e IE</button>
+<button type="button" class="choice" data-other-kind="person">👤 Pessoa física — CPF</button>
+</div>
+<div class="grid">
+<div class="field"><label id="otherLabel" for="otherDoc">CNPJ do fornecedor</label><input id="otherDoc" autocomplete="off" maxlength="22" placeholder="Digite o CNPJ"></div>
+<div class="field" id="otherIeWrap"><label id="otherIeLabel" for="otherIe">Inscrição estadual do fornecedor (se houver)</label><input id="otherIe" autocomplete="off" maxlength="22" placeholder="Opcional para empresa"></div>
+<div class="field hidden" id="otherIeUfWrap"><label for="otherIeUf">Estado da inscrição estadual</label><select id="otherIeUf"></select></div>
+<div class="field"><label for="originUf">De qual estado sai a mercadoria?</label><select id="originUf"></select></div>
+<div class="field"><label for="destUf">Em qual estado será entregue?</label><select id="destUf"></select></div>
+</div>
+<div class="lookup-controls">
+<button id="lookupOther" class="primary" type="button">Buscar cadastro da outra parte</button>
+<label id="otherIncludeIeWrap" class="check" style="margin:0"><input id="otherIncludeIe" type="checkbox"><span>Consultar também IE (usa cota gratuita)</span></label>
+</div>
+<label class="check hidden" id="otherRuralConsentWrap"><input id="otherRuralConsent" type="checkbox"><span>Declaro ter uma finalidade legítima para consultar este CPF rural e concordo com seu envio à SintegrAPI para pesquisa cadastral. O CPF não será incluído nas estatísticas da FORTECOMPANNY.</span></label>
+<div class="warning" id="otherLookupStatus" role="status" style="margin-top:14px"><strong>Conferência cadastral.</strong> A consulta automática depende das credenciais dos fornecedores. Sem retorno verificado, estados, IE e situação tributária continuam informados e sujeitos a conferência. Não presumiremos CFOP ou ICMS-ST.</div>
+<div class="field hidden" id="otherRegistrationsWrap"><label for="otherRegistrations">Escolha a inscrição estadual consultada</label><select id="otherRegistrations"></select></div>
+<div class="actions"><button id="back2">Voltar</button><button class="gold" id="next2">Continuar</button></div></div>
+<div class="card hidden" id="step3"><h2>3. Qual é o produto e o destino dele?</h2>
+<div class="field full" style="border:1px solid #d8e2eb;background:#f7f9fc;border-radius:12px;padding:14px;margin:12px 0">
+<label for="xmlNfeFile" style="font-size:14px;font-weight:700">Já tem uma nota do fornecedor? Importar XML da NF-e (opcional)</label>
+<p style="margin:6px 0 10px">Carregue a nota para preencher NCM, CEST e descrição e consultar os impostos declarados no documento. <strong>O arquivo é lido somente neste aparelho</strong>, sem envio ao servidor.</p>
+<input type="file" id="xmlNfeFile" accept=".xml,text/xml,application/xml" style="padding:8px;border:1px solid #bdcad8;border-radius:9px;width:100%;max-width:100%">
+<div id="xmlNfeItemsWrap" class="field hidden" style="margin-top:10px"><label for="xmlNfeItems">Selecione o produto da nota fiscal</label><select id="xmlNfeItems"></select></div>
+<div id="xmlNfeStatus" class="warning" role="status" style="margin-top:10px">Opcional. Aceita XML de NF-e de até 6 MB. O CFOP e os impostos da nota de origem não são copiados como tributação da nova operação.</div>
+</div>
+<div class="grid">
+<div class="field"><label for="product">Produto</label><input id="product" placeholder="Ex.: cimento, cerveja, tijolo" maxlength="90"></div>
+<div class="field"><label for="ncm">NCM (sugestão automática ou informado na NF-e)</label><input id="ncm" inputmode="numeric" placeholder="8 dígitos" maxlength="8"></div>
+<div class="field"><label for="cest">CEST (quando aplicável)</label><input id="cest" inputmode="numeric" placeholder="7 dígitos" maxlength="7"></div>
+<div class="field"><label id="useLabel" for="use">Para que o produto será utilizado?</label><select id="use"><option value="revenda">Para revender</option><option value="obra">Utilizar em uma obra/construção</option><option value="consumo">Uso ou consumo da atividade</option><option value="industrializacao">Fabricar outro produto</option><option value="ativo">Máquina, equipamento ou ativo imobilizado</option><option value="particular">Consumo pessoal (pessoa física)</option></select></div>
+<div class="field full"><div id="catalogHint" class="warning">Digite o produto para obter sugestões de NCM e CEST, quando existirem na tabela fundamentada da FORTECOMPANNY.</div></div>
+<div class="field full" style="padding:14px;border:1px solid #dae3ec;border-radius:12px;background:#f9fbfd">
+<label for="ncmOfficialSearch">Pesquisar na tabela completa de NCM da Receita Federal</label>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<input id="ncmOfficialSearch" style="flex:2;min-width:180px" placeholder="Ex.: cimento, cal, argamassa ou 2523" maxlength="65" autocomplete="off">
+<button type="button" id="findOfficialNcm" class="primary" style="flex:1">Pesquisar</button>
+</div>
+<button type="button" id="verifyEnteredNcm" style="margin-top:10px">Conferir o NCM informado (8 dígitos)</button>
+<small id="ncmVersion" style="display:block;margin:10px 0 0">Carregando versão oficial do NCM...</small>
+<div id="ncmOfficialResults" aria-live="polite" style="display:grid;gap:7px;margin-top:10px"></div>
+<div id="ncmOfficialStatus" class="warning" style="margin-top:10px">O banco oficial confirma a existência do código, não o seu enquadramento para a mercadoria. Confira composição e documentos técnicos.</div>
+</div>
+<div class="field full" style="border:1px solid #ddd5c2;border-radius:12px;background:#fffdf8;padding:14px">
+<label for="cest">CEST possíveis a partir do NCM</label>
+<p style="margin:6px 0 10px">Pesquisa em uma compilação pública do Convênio ICMS 142/18. <strong>A associação ao NCM não prova que o produto se enquadra nem que haverá ICMS-ST.</strong> Confira sempre a descrição oficial.</p>
+<button type="button" id="findCestFromNcm" class="primary">Pesquisar possíveis CEST do NCM</button>
+<button type="button" id="verifyTypedCest" style="margin-top:6px">Consultar CEST informado</button>
+<small id="cestVersion" style="display:block;margin:10px 0 0">Carregando referência CEST...</small>
+<div id="cestCandidates" aria-live="polite" style="display:grid;gap:8px;margin-top:10px"></div>
+<div id="cestLegalStatus" class="warning" role="status" style="margin-top:10px">Escolha apenas se a descrição fiscal corresponder ao produto. O enquadramento por UF, data e operação permanece pendente.</div>
+<a href="https://www.confaz.fazenda.gov.br/legislacao/convenios/2018/CV142_18" target="_blank" rel="noopener noreferrer" style="font-size:12px;display:inline-block;margin-top:9px">Conferir Convênio ICMS 142/18 no CONFAZ</a>
+</div>
+<div class="field full hidden" id="catalogOptionsWrap"><label style="font-size:13px;font-weight:700" for="catalogOptions">Há mais de uma possibilidade de NCM/CEST. Selecione apenas se a descrição corresponder ao XML ou ficha técnica:</label><select id="catalogOptions" style="display:block;width:100%;min-height:45px;margin-top:7px"></select></div>
+<div class="field"><label for="stEvidence">ICMS-ST nesta operação</label><select id="stEvidence">
+<option value="unknown">Não tenho informação</option>
+<option value="no_st">Sem ST — conferido na documentação</option>
+<option value="prior_st">ST retida anteriormente — conferida</option>
+<option value="substitute">ST a recolher pelo responsável — conferida</option>
+</select></div>
+<div class="field" id="sellerSourceWrap"><label for="sellerSource">Na venda, qual a origem da mercadoria?</label><select id="sellerSource">
+<option value="unknown">Não sei ainda</option><option value="third_party">Comprei de fornecedor para revender</option><option value="own_production">Produção própria ou do produtor rural</option>
+</select></div>
+<div class="field" id="buyerContributorWrap"><label for="buyerContributor">Comprador é contribuinte do ICMS?</label><select id="buyerContributor">
+<option value="unknown">Não confirmado</option><option value="yes">Sim — condição confirmada</option><option value="no">Não contribuinte — confirmado</option>
+</select></div>
+<div class="field"><label for="operationDate">Data prevista da operação</label><input id="operationDate" type="date"></div>
+</div>
+<div class="warning" style="margin-top:14px">O produto sozinho não determina se há substituição tributária. Para verificar ICMS-ST são necessários NCM, descrição, CEST quando aplicável, UF, data da operação, regras estaduais e responsabilidade tributária. O simulador atual não confirma essas informações automaticamente.</div>
+<div class="actions"><button id="back3">Voltar</button><button class="gold" id="next3">Analisar</button></div></div>
+<div class="card hidden" id="step4"><h2>FORTECOMPANNY — Ficha fiscal da consulta</h2>
+<p>Dados do produto e tratamento de compras/vendas. Cada campo informa se é um código existente, sugestão ou informação ainda não confirmada.</p>
+<div id="fiscalDossier" class="fiscal-dossier" aria-live="polite"></div>
+<div id="fiscalCrossCheck" class="warning" style="margin:10px 0 17px;white-space:pre-line" role="status">Conferência automática dos códigos fiscais pendente.</div>
+<details class="fiscal-audit"><summary>Ver todos os dados informados na consulta</summary><div id="summary"></div></details>
+<div id="fiscalReview" class="warning" style="margin-top:15px"><strong>Classificação fiscal condicionada:</strong> sugestões não substituem a legislação vigente, o XML do produto nem a análise da operação. CST/CSOSN, PIS/COFINS, bases e alíquotas ainda requerem validação.</div>
+<div style="font-size:13px;margin-top:12px;line-height:1.8">Fontes: <a href="https://www.confaz.fazenda.gov.br/legislacao/convenios/2018/CV142_18" target="_blank" rel="noopener">CONFAZ — CEST e ST</a> · <a href="https://www.gov.br/receitafederal/pt-br/assuntos/aduana-e-comercio-exterior/classificacao-fiscal-de-mercadorias/classif" target="_blank" rel="noopener">Receita — NCM/Classif</a> · <a href="https://www.sefaz.pe.gov.br/Legislacao/Tributaria/Documents/Legislacao/Tabelas/CFOP.htm" target="_blank" rel="noopener">Tabela CFOP</a></div>
+<div class="divider"></div>
+<p>Você poderá realizar uma simulação indicativa na versão anterior (MG/GO), mas deverá conferir o resultado com documentação fiscal e legislação vigente.</p>
+<div class="actions"><button id="back4">Alterar dados</button><button class="primary" id="printDossier" type="button">Imprimir / salvar PDF</button><button id="legacy">Abrir simulador experimental</button></div></div>
+<div id="msg" role="alert"></div></main><footer>FORTECOMPANNY • Fluxo simplificado experimental • CPF e IE do produtor ficam somente nesta página; documentos de outras partes não são enviados às estatísticas.</footer>
+<script>
+(function(){
+'use strict'; const REGISTRY='https://yzsxtgmasssoflgqhizm.supabase.co/functions/v1/cfop-cadastros';
+const $=id=>document.getElementById(id), UF='AC AL AM AP BA CE DF ES GO MA MG MS MT PA PB PE PI PR RJ RN RO RR RS SC SE SP TO'.split(' '), BASE='https://yzsxtgmasssoflgqhizm.supabase.co/functions/v1/consulta-cfop';
+let step=0,profile='company',op='entrada',otherKind='company',saved=false;
+const verified={own:null,other:null};
+function identity(who){const own=who==='own',kind=own?profile:otherKind;return JSON.stringify([kind,alpha($(own?(kind==='company'?'ownCnpj':'ownCpf'):'otherDoc').value),kind==='rural'?$(own?'ownUf':'otherIeUf').value:'']);}
+function invalidate(who){verified[who]=null;$(who+'RegistrationsWrap').classList.add('hidden');$(who+'Registrations').replaceChildren();const id=who==='own'?'ownStatus':'otherLookupStatus';$(id).className='warning';$(id).textContent='Dados informados pelo visitante; cadastro não confirmado. Faça uma nova busca se necessário.';if(who==='own'){try{sessionStorage.removeItem('ft-cfop-verified-company')}catch(e){}}}
+function currentResult(who){const v=verified[who];return v&&v.identity===identity(who)?v.data:null;}
+function renderRegistrations(who,data){
+ const select=$(who+'Registrations');select.replaceChildren();const list=(data.registrations||[]).filter(r=>r.ie);
+ $(who+'RegistrationsWrap').classList.toggle('hidden',!list.length);const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Selecione a IE e a UF';select.appendChild(placeholder);
+ list.forEach((r,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=r.ie+' / '+r.uf+' — '+(r.active===true?'ativa':r.active===false?'não ativa':'situação não confirmada');select.appendChild(option)});
+ select.onchange=()=>{if(select.value===''||!currentResult(who))return;const r=list[Number(select.value)];const target=$(who==='own'?'ownIe':'otherIe');target.value=r.ie;};
+ // Mesmo um retorno único exige escolha explícita; não substituir uma IE já informada.
+}
+['ownUf','originUf','destUf','otherIeUf'].forEach(id=>UF.forEach(uf=>{const e=document.createElement('option');e.value=uf;e.textContent=uf;$(id).appendChild(e)}));
+$('ownUf').value='MG';$('originUf').value='MG';$('destUf').value='MG';$('otherIeUf').value='MG';
+function msg(t){$('msg').textContent=t; if(t)$('msg').scrollIntoView({behavior:'smooth',block:'nearest'})}
+function goto(n){step=n;$('step0').classList.toggle('hidden',n!==0);$('prog').classList.toggle('hidden',n===0);for(let k=1;k<=4;k++)$('step'+k).classList.toggle('hidden',k!==n);[...$('prog').children].forEach((p,i)=>p.classList.toggle('on',i<n));msg('');window.scrollTo({top:0,behavior:'smooth'})}
+function alpha(v){return String(v||'').toUpperCase().replace(/[^0-9A-Z]/g,'')}
+function cnpjValid(v){let s=alpha(v),a=[5,4,3,2,9,8,7,6,5,4,3,2],b=[6,5,4,3,2,9,8,7,6,5,4,3,2];if(!/^[A-Z0-9]{12}[0-9]{2}$/.test(s)||s.slice(0,12)===s[0].repeat(12))return false;const dv=(part,w)=>{let total=0;for(let i=0;i<w.length;i++)total+=(part.charCodeAt(i)-48)*w[i];let r=total%11;return r<2?0:11-r};let d1=dv(s.slice(0,12),a);return s.slice(-2)===String(d1)+dv(s.slice(0,12)+d1,b)}
+function cpfValid(value){let s=String(value||'').replace(/\D/g,'');if(!/^\d{11}$/.test(s)||s.split('').every(c=>c===s[0]))return false;for(let len=9;len<=10;len++){let sum=0;for(let i=0;i<len;i++)sum+=Number(s[i])*(len+1-i);let v=(sum*10)%11;if(v===10)v=0;if(v!==Number(s[len]))return false}return true}
+document.querySelectorAll('[data-profile]').forEach(b=>b.onclick=()=>{
+ profile=b.dataset.profile;document.querySelectorAll('[data-profile]').forEach(x=>x.classList.toggle('selected',x===b));
+ invalidate('own');
+ $('idCnpj').classList.toggle('hidden',profile!=='company');$('idCpf').classList.toggle('hidden',profile==='company');
+ $('idIe').classList.toggle('hidden',profile!=='rural');$('idUf').classList.toggle('hidden',profile!=='rural');
+ refreshProviderButtons();
+});
+function setOtherKind(value){
+ if(!['company','rural','person'].includes(value))return;
+ otherKind=value;
+ invalidate('other');
+ document.querySelectorAll('[data-other-kind]').forEach(b=>b.classList.toggle('selected',b.dataset.otherKind===value));
+ const role=op==='entrada'?'fornecedor':'comprador';
+ const rural=value==='rural',person=value==='person';
+ $('otherLabel').textContent=(rural||person?'CPF':'CNPJ')+' do '+role;
+ $('otherDoc').placeholder=rural?'CPF do produtor rural':person?'CPF do '+role:'CNPJ do '+role;
+ $('otherDoc').inputMode=rural||person?'numeric':'text';
+ $('otherIeWrap').classList.toggle('hidden',person);
+ $('otherIeUfWrap').classList.toggle('hidden',!rural);
+ $('otherIeLabel').textContent=rural?'Inscrição estadual do produtor rural *':'Inscrição estadual do '+role+' (se houver)';
+ $('otherIe').placeholder=rural?'Número da inscrição estadual (obrigatório)':'Opcional para empresa';
+ if(person){$('otherIe').value='';}
+ if(rural){$('otherIeUf').value=op==='entrada'?$('originUf').value:$('destUf').value;}
+ refreshProviderButtons();
+}
+document.querySelectorAll('[data-other-kind]').forEach(b=>b.onclick=()=>setOtherKind(b.dataset.otherKind));
+function setOperation(value){
+ if(value!=='entrada'&&value!=='saida')return;
+ op=value;
+ $('counterpartyTitle').textContent=value==='entrada'?'2. De quem você está comprando?':'2. Para quem você está vendendo?';
+ $('otherHelp').textContent=value==='entrada'?'Informe quem está fornecendo a mercadoria: empresa, produtor rural ou pessoa física.':'Informe quem está comprando a mercadoria: empresa, produtor rural ou pessoa física.';
+ $('otherRole').textContent=value==='entrada'?'fornecedor':'comprador';
+ $('useLabel').textContent=value==='entrada'?'Para que você vai utilizar a mercadoria?':'Para que o comprador vai utilizar a mercadoria?';
+ setOtherKind(otherKind);
+}
+document.querySelectorAll('[data-entry-operation]').forEach(b=>b.onclick=()=>{setOperation(b.dataset.entryOperation);goto(1)});
+$('backToChoice').onclick=()=>goto(0);
+
+const providerStatus={cnpjAvailable:false,ruralAvailable:false,checked:false};
+function refreshProviderButtons(){
+ const selfType=profile==='company'?'cnpj':profile==='rural'?'rural':'none';
+ const otherType=otherKind==='company'?'cnpj':otherKind==='rural'?'rural':'none';
+ $('ownLookupControls').classList.toggle('hidden',selfType==='none');
+ $('ownRuralConsentWrap').classList.toggle('hidden',selfType!=='rural');
+ $('ownIncludeIeWrap').classList.toggle('hidden',selfType!=='cnpj');
+ $('otherRuralConsentWrap').classList.toggle('hidden',otherType!=='rural');
+ $('otherIncludeIeWrap').classList.toggle('hidden',otherType!=='cnpj');
+ $('lookupOwn').disabled=!providerStatus.checked||!providerStatus[selfType==='cnpj'?'cnpjAvailable':'ruralAvailable'];
+ $('lookupOther').classList.toggle('hidden',otherType==='none');
+ $('lookupOther').disabled=!providerStatus.checked||!providerStatus[otherType==='cnpj'?'cnpjAvailable':'ruralAvailable'];
+ const message=providerStatus.checked?'Conector '+(selfType==='rural'?'SintegrAPI':selfType==='cnpj'?'CNPJ API':'cadastral')+
+ (selfType!=='none'&&!providerStatus[selfType==='cnpj'?'cnpjAvailable':'ruralAvailable']?' ainda não ativado. É possível continuar preenchendo manualmente.':' disponível para consulta. A informação retornada será exibida com a fonte e a data da pesquisa.'):'Verificando disponibilidade das fontes cadastrais...';
+ $('ownStatus').textContent=message;
+ $('otherLookupStatus').textContent=providerStatus.checked?(otherType!=='none'&&providerStatus[otherType==='cnpj'?'cnpjAvailable':'ruralAvailable']?'Conector disponível. Toque em Buscar cadastro para preencher os dados verificados.':'Conector da outra parte ainda não ativado. Continue manualmente; os dados permanecerão não verificados.'):'Verificando conexão cadastral...';
+}
+async function lookup(type,documentValue,uf,extra){
+ const response=await fetch(REGISTRY+'/lookup',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(Object.assign({type:type,document:documentValue,uf:uf},extra||{}))});
+ const data=await response.json().catch(()=>({}));
+ if(!response.ok){
+   if(data.error==='provider_not_configured')throw Error('A integração gratuita ainda não possui chave configurada.');
+   if(data.error==='free_quota_exhausted')throw Error('A cota gratuita da consulta foi atingida. Faça a conferência manual.');
+   if(data.error==='invalid_cnpj'||data.error==='invalid_cpf')throw Error('O documento informado é inválido.');
+   if(data.error==='rural_lookup_requires_consent')throw Error('Autorize expressamente a consulta de CPF no provedor externo.');
+   if(data.error==='not_found')throw Error('Cadastro não encontrado pelo provedor.');
+   throw Error('Consulta indisponível ou não confirmada. Continue manualmente.');
+ }
+ return data;
+}
+function statusSummary(data){
+ const title=data.name||data.tradeName||'Cadastro encontrado sem nome divulgado';
+ const items=[title, 'Estado: retorno de intermediário; titularidade não comprovada','Fonte: '+data.source,'Consultado: '+new Date(data.verifiedAt).toLocaleString('pt-BR')];
+ if(data.city)items.push('Município: '+data.city);
+ if(data.sourceUpdatedAt)items.push('Atualização da base: '+data.sourceUpdatedAt);
+ if(data.ieRequested)items.push('Consulta IE: '+data.ieStatus);
+ if(data.ieFallbackUFs?.length)items.push('SEFAZ indisponível; usado dado anterior em: '+data.ieFallbackUFs.join(', '));
+ if(data.ieUnavailableUFs?.length)items.push('IE não confirmada em: '+data.ieUnavailableUFs.join(', '));
+ if(data.isCached===true)items.push('Resposta em cache; confira a data da inscrição');
+ if(data.situation)items.push('Situação cadastral: '+data.situation);
+ if(data.uf)items.push('UF: '+data.uf);
+ if(data.simplesNacional===true)items.push('Simples Nacional: optante');
+ else if(data.simplesNacional===false)items.push('Simples Nacional: não optante');
+ else items.push('Simples Nacional: não confirmado');
+ items.push('Lucro Real/Presumido e regime do ICMS: não confirmados');
+ if(data.registrations?.length){items.push('IEs retornadas: '+data.registrations.map(x=>x.ie+' ('+x.uf+')'+(x.active===true?' — ativa':x.active===false?' — não ativa':'')).join('; '))}
+ return items.join('\n');
+}
+$('lookupOwn').onclick=async()=>{
+ const button=$('lookupOwn');if(!$('accept').checked){msg('Antes da consulta automática, aceite os Termos de Uso e Privacidade.');return}
+ if(profile==='person')return;
+ const type=profile==='company'?'cnpj':'rural';
+ const doc=type==='cnpj'?alpha($('ownCnpj').value):String($('ownCpf').value).replace(/\D/g,'');
+ if(type==='cnpj'&&!cnpjValid(doc)){msg('Informe um CNPJ válido.');return}
+ if(type==='rural'&&(!cpfValid(doc)||!$('ownRuralConsent').checked)){msg('Informe CPF válido e autorize a consulta à SintegrAPI.');return}
+ const requestedIdentity=identity('own');invalidate('own');
+ button.disabled=true;button.textContent='Consultando...';
+ try{
+  const data=await lookup(type,doc,type==='cnpj'?'':$('ownUf').value,type==='cnpj'?{includeIE:$('ownIncludeIe').checked}:{consent:true});
+  if(requestedIdentity!==identity('own'))return;
+  verified.own={identity:requestedIdentity,data};renderRegistrations('own',data);
+  if(data.name&&!$('ownName').value.trim())$('ownName').value=data.name;
+  if(type==='company'||type==='cnpj'){
+   if(data.uf){if(op==='entrada')$('destUf').value=data.uf;else $('originUf').value=data.uf}
+  }
+  $('ownStatus').className='warning good';$('ownStatus').textContent=statusSummary(data);
+  if(type==='cnpj'){try{sessionStorage.setItem('ft-cfop-verified-company',JSON.stringify({cnpj:doc,...data}))}catch(e){}}
+ }catch(err){$('ownStatus').className='warning';$('ownStatus').textContent=err.message||'Consulta indisponível.'}
+ finally{button.disabled=false;button.textContent='Buscar cadastro automaticamente'}
+};
+$('lookupOther').onclick=async()=>{
+ const button=$('lookupOther');const type=otherKind==='company'?'cnpj':otherKind==='rural'?'rural':'none';
+ if(type==='none')return;
+ const doc=type==='cnpj'?alpha($('otherDoc').value):String($('otherDoc').value).replace(/\D/g,'');
+ if(type==='cnpj'&&!cnpjValid(doc)){msg('Informe um CNPJ válido da outra parte.');return}
+ if(type==='rural'&&(!cpfValid(doc)||!$('otherRuralConsent').checked)){msg('Informe um CPF válido e autorize a consulta cadastral do produtor rural.');return}
+ const requestedIdentity=identity('other');invalidate('other');
+ button.disabled=true;button.textContent='Consultando...';
+ try{
+  const data=await lookup(type,doc,type==='cnpj'?'':$('otherIeUf').value,type==='cnpj'?{includeIE:$('otherIncludeIe').checked}:{consent:true});
+  if(requestedIdentity!==identity('other'))return;
+  verified.other={identity:requestedIdentity,data};renderRegistrations('other',data);
+  if(type==='cnpj'){
+   if(data.uf){if(op==='entrada')$('originUf').value=data.uf;else $('destUf').value=data.uf}
+  }
+  $('otherLookupStatus').className='warning good';$('otherLookupStatus').textContent=statusSummary(data);
+ }catch(err){$('otherLookupStatus').className='warning';$('otherLookupStatus').textContent=err.message||'Consulta indisponível.'}
+ finally{button.disabled=false;button.textContent='Buscar cadastro da outra parte'}
+};
+fetch(REGISTRY+'/status').then(r=>r.ok?r.json():Promise.reject()).then(s=>{
+ providerStatus.checked=true;
+ providerStatus.cnpjAvailable=s.cnpjAvailable===true;
+ providerStatus.ruralAvailable=s.ruralAvailable===true;
+ refreshProviderButtons();
+}).catch(()=>{providerStatus.checked=true;refreshProviderButtons()});
+const queryOperation=new URLSearchParams(location.search).get('operacao');
+if(queryOperation==='entrada'||queryOperation==='saida'){setOperation(queryOperation);goto(1)}else{goto(0)}
+try{let v=JSON.parse(sessionStorage.getItem('ft-cfop-access-v2')||'null');if(v&&cnpjValid(v.cnpj)){$('ownCnpj').value=v.cnpj;$('ownName').value=v.name||'';}}catch(e){}
+$('saveOwn').onclick=async()=>{
+if(!$('accept').checked){msg('É necessário aceitar os termos antes de continuar.');return}
+const ownName=$('ownName').value.trim(), company=alpha($('ownCnpj').value);
+if(profile==='company'&&!cnpjValid(company)){msg('Digite um CNPJ válido (numérico ou alfanumérico).');return}
+if(profile!=='company'&&!cpfValid($('ownCpf').value)){msg('Digite um CPF válido.');return}
+if(profile==='rural'&&!String($('ownIe').value).trim()){msg('Informe sua inscrição estadual.');return}
+if(profile==='company'){
+  let b=$('saveOwn');b.disabled=true;b.textContent='Registrando...';
+  try{
+  let response=await fetch(BASE+'/api/access',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({cnpj:company,name:ownName||null,acceptTerms:true,analytics:!!$('insights').checked,version:'cfop-privacy-2026-11-12-v1'})});
+  const payload=await response.json().catch(()=>({}));
+  if(!response.ok||!payload.ok)throw Error(payload.error||'Não foi possível confirmar os dados do CNPJ');
+  sessionStorage.setItem('ft-cfop-access-v2',JSON.stringify({cnpj:company,name:ownName,analytics:!!$('insights').checked,version:'cfop-privacy-2026-11-12-v1'}));
+  saved=true;
+  }catch(e){msg('Cadastro não confirmado no servidor: '+e.message);return}finally{b.disabled=false;b.textContent='Salvar e continuar'}
+}else{saved=true}
+if(profile==='rural')$(op==='entrada'?'destUf':'originUf').value=$('ownUf').value;
+const ownLookup=currentResult('own');if(profile==='company'&&ownLookup&&UF.includes(ownLookup.uf))$(op==='entrada'?'destUf':'originUf').value=ownLookup.uf;
+// Estados informados na consulta. Não inferir a UF do estabelecimento pelo CNPJ.
+goto(2);
+};
+$('back2').onclick=()=>goto(1);$('back3').onclick=()=>goto(2);$('back4').onclick=()=>goto(3);
+$('next2').onclick=()=>{
+ const raw=$('otherDoc').value;
+ const doc=otherKind==='company'?alpha(raw):String(raw||'').replace(/\D/g,'');
+ const role=op==='entrada'?'fornecedor':'comprador';
+ if(otherKind==='company'){
+  if(doc&&!cnpjValid(doc)){msg('O CNPJ do '+role+' não passou na validação dos dígitos verificadores.');return}
+ }else if(!cpfValid(doc)){
+  msg('Informe um CPF válido do '+role+(otherKind==='rural'?' (produtor rural)':'')+'.');return
+ }
+ if(otherKind==='rural'){
+  const ie=$('otherIe').value.trim();
+  if(ie.length<2||ie.length>22){msg('Informe a inscrição estadual do produtor rural.');return}
+  if(!UF.includes($('otherIeUf').value)){msg('Selecione o estado da inscrição estadual.');return}
+ }
+ goto(3)
+};
+
+
+let xmlDocument=null,xmlSelected=null;
+function currentXmlEvidence(){
+ if(!xmlSelected)return null;
+ if($('product').value.trim()!==xmlSelected.description || $('ncm').value.replace(/\D/g,'')!==xmlSelected.ncm)return null;
+ return xmlSelected;
+}
+function xmlStatus(message,valid){
+ $('xmlNfeStatus').className='warning'+(valid?' good':'');
+ $('xmlNfeStatus').textContent=message;
+}
+function selectXmlItem(index){
+ const item=xmlDocument?.items?.[index];
+ if(!item){xmlSelected=null;return}
+ xmlSelected=item;
+ $('product').value=item.description;
+ $('ncm').value=item.ncm;
+ $('cest').value=item.cest;
+ suggestedNcm='';suggestedCest='';
+ officialNcm=null;
+ renderProductSuggestion();
+ if(/^\d{8}$/.test(item.ncm))verifyNcmCode(item.ncm,false);
+ const reasons=[
+ 'Produto '+item.item+': '+item.description,
+ 'NCM no XML: '+(item.ncm||'ausente'),
+ 'CEST no XML: '+(item.cest||'ausente'),
+ 'CFOP da NF-e de origem: '+(item.cfop||'ausente'),
+ 'CST/CSOSN ICMS da origem: '+(item.icms.code||'ausente'),
+ 'ICMS-ST destacado na operação: '+(item.icms.valueST||'não destacado'),
+ 'ICMS-ST retido anteriormente: '+(item.icms.valueSTRet||'não indicado'),
+ 'Não usar CFOP/CST ou valores desta NF-e automaticamente na nova operação.',
+ 'Nenhum dado do arquivo será enviado à estatística da FORTECOMPANNY.'
+ ];
+ xmlStatus(reasons.join('\n'),true);
+ $('xmlNfeStatus').style.whiteSpace='pre-line';
+}
+$('xmlNfeFile').addEventListener('change',async function(){
+ xmlDocument=null;xmlSelected=null;
+ $('xmlNfeItemsWrap').classList.add('hidden');
+ const file=this.files?.[0];
+ if(!file){xmlStatus('Nenhum arquivo selecionado.',false);return}
+ xmlStatus('Lendo XML localmente no aparelho...',false);
+ try{
+  const parser=window.FORTE_XML_NFE;
+  if(!parser)throw Error('Leitor local não disponível.');
+  const data=await parser.parseFile(file);
+  xmlDocument=data;
+  const sel=$('xmlNfeItems');sel.replaceChildren();
+  data.items.forEach((i,index)=>{
+   const opt=document.createElement('option');opt.value=String(index);
+   opt.textContent='Item '+i.item+' — '+i.description.slice(0,80);
+   sel.appendChild(opt);
+  });
+  $('xmlNfeItemsWrap').classList.toggle('hidden',data.items.length<=1);
+  selectXmlItem(0);
+  xmlStatus('NF-e lida localmente: '+data.items.length+' item(ns). '+(data.nfNumber?'Nº '+data.nfNumber+'. ':'')+'Escolha o item para preencher os dados. A autorização/assinatura da NF-e não foi verificada. CFOP e tributos desta nota não são automaticamente os da nova operação.',true);
+ }catch(error){
+  xmlDocument=null;xmlSelected=null;
+  xmlStatus('Não foi possível ler a nota: '+String(error?.message||error),false);
+ }
+});
+$('xmlNfeItems').addEventListener('change',function(){selectXmlItem(Number(this.value))});
+const NCM_DATABASE='https://yzsxtgmasssoflgqhizm.supabase.co/functions/v1/cfop-ncm';
+let officialNcm=null;
+function ncmDescr(s){return String(s||'').replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').trim()}
+function officialCodeFmt(s){const v=String(s||'').replace(/\D/g,'');return v.length===8?v.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1.$2.$3'):v}
+async function ncmGet(route,params){
+ const u=new URL(NCM_DATABASE+'/'+route);
+ for(const [k,v] of Object.entries(params))u.searchParams.set(k,String(v));
+ const r=await fetch(u,{headers:{Accept:'application/json'}});
+ if(!r.ok){
+  const err=new Error(r.status===404?'Código não encontrado na tabela consultada.':'Serviço de consulta de códigos fiscais temporariamente indisponível.');
+  err.status=r.status;throw err;
+ }
+ return r.json();
+}
+
+let cestLookup=null;
+let cestSelected=null;
+function selectedCestEvidence(){
+ if(!cestSelected||cestSelected.ncm!==$('ncm').value.replace(/\D/g,'')||cestSelected.cest!==$('cest').value.replace(/\D/g,''))return null;
+ return cestSelected;
+}
+function cestMessage(message,success){
+ $('cestLegalStatus').textContent=message;
+ $('cestLegalStatus').className='warning'+(success?' good':'');
+}
+function printCestChoices(items,ncm){
+ const panel=$('cestCandidates');panel.replaceChildren();
+ if(!items.length){const t=document.createElement('p');t.textContent='Não há vínculo CEST registrado nesta compilação para o NCM informado. Isso não comprova ausência de ST ou CEST.';panel.appendChild(t);return}
+ for(const item of items){
+  const row=document.createElement('div');row.style.cssText='border:1px solid #d6dfe8;border-radius:10px;padding:10px;background:#fff;display:flex;gap:9px;align-items:center;justify-content:space-between;flex-wrap:wrap';
+  const main=document.createElement('div');main.style.flex='1';
+  const title=document.createElement('strong');title.textContent=String(item.cest||'').replace(/^(\d{2})(\d{3})(\d{2})$/,'$1.$2.$3')+' — '+(item.descricao||'');
+  const caption=document.createElement('small');caption.style.display='block';caption.textContent=(item.segmento||'')+' • NCM/SH referência: '+(item.matchPrefixes||[]).join(', ');
+  main.append(title,caption);
+  const btn=document.createElement('button');btn.type='button';btn.textContent='Usar após conferir';
+  btn.onclick=()=>{
+   if($('ncm').value.replace(/\D/g,'')!==ncm){cestMessage('O NCM foi alterado desde a busca. Consulte novamente.',false);return}
+   $('cest').value=item.cest;
+   cestSelected={cest:item.cest,ncm,descricao:item.descricao,segmento:item.segmento,origem:'Tabelas Fiscais / Convênio 142/18',timestamp:new Date().toISOString()};
+   suggestedCest='';
+   cestMessage('CEST '+title.textContent+' selecionado como referência. A correspondência com a descrição da mercadoria, vigência e ST da operação ainda precisa ser conferida na legislação.',true);
+  };
+  row.append(main,btn);panel.appendChild(row);
+ }
+}
+async function lookupCestByNcm(value){
+ const ncm=String(value||'').replace(/\D/g,'');
+ if(ncm.length!==8){cestMessage('Informe primeiro um NCM válido de oito dígitos.',false);return}
+ const requestId=ncm;
+ cestSelected=null;
+ cestMessage('Pesquisando possíveis vínculos CEST da referência pública...',false);
+ try{
+  const data=await ncmGet('cest-by-ncm',{ncm});
+  if($('ncm').value.replace(/\D/g,'')!==requestId)return;
+  cestLookup=data;
+  printCestChoices(data.items||[],ncm);
+  cestMessage('Consulta informativa: '+(data.items||[]).length+' possibilidade(s) para '+ncm+'. Não determina ICMS-ST. Compare a descrição e a data com o Convênio ICMS 142/18 e a regra da UF.',false);
+ }catch(error){cestLookup=null;printCestChoices([],ncm);cestMessage('Não foi possível pesquisar CEST: '+String(error?.message||error),false)}
+}
+$('findCestFromNcm').onclick=()=>lookupCestByNcm($('ncm').value);
+$('verifyTypedCest').onclick=async()=>{
+ const code=$('cest').value.replace(/\D/g,'');
+ if(code.length!==7){cestMessage('Informe o CEST completo com sete dígitos.',false);return}
+ try{
+  const data=await ncmGet('cest-code',{code});
+  cestSelected=null;
+  $('cestCandidates').replaceChildren();
+  cestMessage('CEST encontrado na compilação: '+code+' — '+data.item.descricao+' ('+data.item.segmento+'). NCM/SH relacionados: '+(data.ncmPrefixes||[]).join(', ')+'. Não comprova enquadramento do produto nem ICMS-ST.',true);
+ }catch(error){cestMessage('CEST não confirmado: '+String(error?.message||error),false)}
+};
+$('ncm').addEventListener('input',()=>{cestSelected=null;cestLookup=null;$('cestCandidates').replaceChildren();cestMessage('NCM alterado; pesquise novamente os CEST associados.',false)});
+$('cest').addEventListener('input',()=>{cestSelected=null});
+ncmGet('cest-version',{}).then(data=>{
+ const snapshot=data.snapshot||{};
+ $('cestVersion').textContent='Base de referência: '+(snapshot.registros_cest||'?')+' CEST; gerada em '+(snapshot.gerado_em?new Date(snapshot.gerado_em).toLocaleDateString('pt-BR'):'data desconhecida')+'. Dados agregados, não homologados.';
+}).catch(()=>{$('cestVersion').textContent='Referência CEST temporariamente indisponível.'});
+function showNcmStatus(text,isOk){
+ $('ncmOfficialStatus').textContent=text;
+ $('ncmOfficialStatus').className='warning'+(isOk?' good':'');
+}
+function showNcmRecords(items){
+ const list=$('ncmOfficialResults');list.replaceChildren();
+ if(!items.length){const p=document.createElement('p');p.textContent='Nenhum registro encontrado. Pesquise pela palavra principal ou pelos primeiros dígitos do NCM.';list.appendChild(p);return}
+ for(const entry of items){
+ const row=document.createElement('div');row.style.cssText='padding:9px 10px;border:1px solid #d5dde6;border-radius:10px;background:white;display:flex;gap:9px;align-items:center;justify-content:space-between;flex-wrap:wrap';
+ const details=document.createElement('div');details.style.flex='1';
+ const strong=document.createElement('strong');strong.textContent=officialCodeFmt(entry.codigo)+' — '+ncmDescr(entry.descricao);
+ const subtitle=document.createElement('small');subtitle.style.display='block';subtitle.textContent=entry.nivel===8?'NCM de oito dígitos':'Grupo da nomenclatura — não é NCM completo';
+ details.append(strong,subtitle);
+ const b=document.createElement('button');
+ b.textContent=entry.nivel===8?'Conferir e usar código':'Explorar códigos';
+ b.onclick=()=>{
+  if(entry.nivel===8)verifyNcmCode(entry.codigo,true);
+  else loadNcmFamily(entry.codigo);
+ };
+ row.append(details,b);list.appendChild(row)
+ }
+}
+async function loadNcmFamily(prefix){
+ showNcmStatus('Carregando códigos de oito dígitos da família '+prefix+'...',false);
+ try{
+  const result=await ncmGet('family',{prefix:prefix});
+  showNcmRecords(result.items||[]);
+  showNcmStatus('Códigos oficiais do grupo '+prefix+'. Analise a composição da mercadoria antes de selecionar. '+(result.hasMore?'A lista tem mais resultados; refine a pesquisa.':''),false);
+ }catch(e){showNcmStatus(String(e.message||e),false)}
+}
+async function verifyNcmCode(value,apply){
+ const code=String(value||'').replace(/\D/g,'');
+ if(code.length!==8){showNcmStatus('Informe um NCM completo com 8 dígitos.',false);return}
+ showNcmStatus('Conferindo o código na tabela oficial da Receita...',false);
+ try{
+  const result=await ncmGet('code',{code:code});
+  const desc=(result.hierarchy||[]).map(x=>officialCodeFmt(x.codigo)+' '+ncmDescr(x.descricao)).join(' › ');
+  officialNcm={code:code,hierarchy:desc,checkedAt:new Date().toISOString(),dataInicio:result.entry?.data_inicio||null,dataFim:result.entry?.data_fim||null};
+  if(apply){
+   const previous=$('ncm').value;
+   $('ncm').value=code;
+   if(previous!==code){$('cest').value='';suggestedCest='';}
+   suggestedNcm='';
+   const p=window.FORTE_CLASSIFICACAO?.suggest($('product').value);
+   const candidates=p?.options||[];
+   const candidate=candidates.find(o=>o.ncm===code)||((p?.ncm===code&&p?.cest)?p:null);
+   if(candidate&&candidate.cest){$('cest').value=candidate.cest;suggestedCest=candidate.cest;}
+  }
+  showNcmStatus('Código '+officialCodeFmt(code)+' encontrado na NCM vigente. Hierarquia: '+desc+'. Importante: a existência do código NÃO comprova sua aplicação ao produto informado.',true);
+  if($('ncm').value.replace(/\D/g,'')===code)lookupCestByNcm(code);
+ }catch(e){officialNcm=null;showNcmStatus('Não foi possível confirmar o NCM: '+String(e.message||e),false)}
+}
+$('findOfficialNcm').onclick=async()=>{
+ const input=$('ncmOfficialSearch');let term=input.value.trim();
+ if(!term){term=$('product').value.trim().split(/\s+/).find(x=>x.length>=3)||'';input.value=term}
+ if(term.length<3){showNcmStatus('Digite ao menos três caracteres da descrição ou NCM.',false);return}
+ const b=$('findOfficialNcm');b.disabled=true;b.textContent='Pesquisando...';
+ try{
+  const result=await ncmGet('search',{q:term});
+  showNcmRecords(result.items||[]);
+  showNcmStatus('Resultados da tabela oficial. Se aparecer um grupo, toque em “Explorar códigos”; somente códigos com 8 dígitos podem preencher o NCM.',false);
+ }catch(e){showNcmStatus(String(e.message||e),false)}
+ finally{b.disabled=false;b.textContent='Pesquisar'}
+};
+$('verifyEnteredNcm').onclick=()=>verifyNcmCode($('ncm').value,false);
+$('ncm').addEventListener('input',()=>{officialNcm=null;showNcmStatus('Código alterado; consulte a tabela oficial novamente.',false)});
+$('product').addEventListener('input',()=>{officialNcm=null});
+ncmGet('version',{}).then(data=>{$('ncmVersion').textContent='Fonte: Receita Federal/Siscomex — '+(data.snapshot?.referencia||'versão não informada')+' • '+(data.snapshot?.quantidade||'?')+' registros; sem API paga.'}).catch(()=>{$('ncmVersion').textContent='Consulta à tabela oficial temporariamente indisponível.'});
+let suggestedNcm="",suggestedCest="";
+function renderProductSuggestion(){
+ if(!window.FORTE_CLASSIFICACAO)return;
+ const product=$('product').value.trim();
+ const x=window.FORTE_CLASSIFICACAO.suggest(product,$('ncm').value);
+ if(!x){$('catalogHint').textContent="Digite uma descrição para buscar NCM e CEST na tabela fundamentada.";$('catalogOptionsWrap').classList.add('hidden');return}
+ let details=[x.name, x.detail];
+ const fmt=window.FORTE_CLASSIFICACAO;
+ if(x.ncm)details.push("NCM indicativo: "+fmt.ncmFmt(x.ncm));
+ else if(x.ncmGroup)details.push("Família NCM: "+x.ncmGroup+" (faltam os 8 dígitos)");
+ if(x.cest)details.push("CEST previsto no Convênio 142/2018: "+fmt.cestFmt(x.cest)+" — não confirma ST na operação.");
+ details.push("Situação: "+x.precision+". Confirme no XML/ficha técnica antes de emitir.");
+ $('catalogHint').textContent=details.join("\n");$('catalogHint').style.whiteSpace="pre-line";
+ const options=Array.isArray(x.options)?x.options:[];
+ $('catalogOptionsWrap').classList.toggle('hidden',options.length===0);
+ const sel=$('catalogOptions');sel.replaceChildren();
+ if(options.length){const placeholder=document.createElement('option');placeholder.value="";placeholder.textContent="Escolher após conferir a documentação";sel.appendChild(placeholder);
+  options.forEach(function(y){const op=document.createElement('option');op.value=y.ncm;op.textContent=fmt.ncmFmt(y.ncm)+" — CEST "+fmt.cestFmt(y.cest)+" — "+y.name;sel.appendChild(op)});
+ }
+ if(x.ncm && (!$('ncm').value||$('ncm').value===suggestedNcm)){$('ncm').value=x.ncm;suggestedNcm=x.ncm}
+ if(x.cest && x.ncm && (!$('cest').value||$('cest').value===suggestedCest)){$('cest').value=x.cest;suggestedCest=x.cest}
+ if(!x.ncm && $('ncm').value===suggestedNcm && suggestedNcm){$('ncm').value="";suggestedNcm=""}
+ if(!x.cest && $('cest').value===suggestedCest && suggestedCest){$('cest').value="";suggestedCest=""}
+}
+$('product').addEventListener('input',renderProductSuggestion);
+$('ncm').addEventListener('change',function(){suggestedNcm="";renderProductSuggestion()});
+$('catalogOptions').addEventListener('change',function(){
+ const x=window.FORTE_CLASSIFICACAO.suggest($('product').value);const found=(x&&x.options||[]).find(o=>o.ncm===$('catalogOptions').value);
+ if(found){$('ncm').value=found.ncm;$('cest').value=found.cest;suggestedNcm=found.ncm;suggestedCest=found.cest;
+ $('catalogHint').textContent="Opção selecionada: "+found.name+". Verifique a composição e o XML; CEST não comprova ST."; }
+});
+const d=new Date();$('operationDate').value=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+function showFiscalConditions(){
+ const isSale=op==='saida';
+ $('sellerSourceWrap').classList.toggle('hidden',!isSale);
+ $('buyerContributorWrap').classList.toggle('hidden',!isSale);
+}
+document.querySelectorAll('[data-entry-operation]').forEach(function(b){b.addEventListener('click',showFiscalConditions)});
+showFiscalConditions();
+
+
+function buildFiscalDossier(product,ncm,cest,productAnalysis,cfopAnalysis) {
+ const root=$('fiscalDossier');root.replaceChildren();
+ const engine=window.FORTE_CLASSIFICACAO;
+ const opDate=$('operationDate').value;
+ const dateWithinNcm=!!officialNcm?.code && (!opDate || ((!officialNcm.dataInicio||opDate>=officialNcm.dataInicio)&&(!officialNcm.dataFim||opDate<=officialNcm.dataFim)));
+ const official=officialNcm?.code===ncm&&dateWithinNcm;
+ const ncmMatchesCurated=!!productAnalysis&&(productAnalysis.ncm===ncm || (productAnalysis.options||[]).some(x=>x.ncm===ncm));
+ const cestMatchesCurated=!!productAnalysis&&!!cest&&((productAnalysis.cest===cest&&ncmMatchesCurated)||(productAnalysis.options||[]).some(x=>x.ncm===ncm&&x.cest===cest));
+ const cestExternal=selectedCestEvidence();
+ const sourceOwn=currentResult('own'),sourceOther=currentResult('other');
+ const currentBuyer=op==='entrada'?sourceOwn:sourceOther;
+ const currentSeller=op==='entrada'?sourceOther:sourceOwn;
+ const roleName=op==='entrada'?'ENTRADA / COMPRA':'SAÍDA / VENDA';
+ const situacao=cfopAnalysis?.code?'Hipótese de CFOP condicionada':'CFOP pendente de análise';
+ const summary=document.createElement('div');summary.className='fiscal-lead';
+ const head=document.createElement('strong');head.textContent=product||'Produto não informado';
+ const info=document.createElement('div');info.textContent=roleName+' • '+$('originUf').value+' → '+$('destUf').value+' • '+situacao;
+ summary.append(head,info);root.appendChild(summary);
+ function sec(title,rows){
+  const container=document.createElement('section');container.className='fiscal-group';
+  const h=document.createElement('h3');h.textContent=title;
+  const t=document.createElement('table');t.className='fiscal-data';
+  rows.forEach(function(row){
+   const tr=t.insertRow(),a=tr.insertCell(),b=tr.insertCell();
+   a.textContent=row.label;
+   const status=document.createElement('span');status.className='fiscal-status '+(row.state||'');
+   status.textContent=row.tag||'Pendente';
+   const value=document.createElement('div');value.textContent=row.value||'Não confirmado';
+   b.append(status,value);
+   if(row.note){const details=document.createElement('small');details.className='fiscal-sub';details.textContent=row.note;b.appendChild(details)}
+  });
+  container.append(h,t);root.appendChild(container);
+ }
+ const unsure=(label,detail)=>({label,value:'Aguardando validação',note:detail,tag:'Pendente'});
+ const ncmReg=official?'Código existente na tabela oficial vigente, com datas compatíveis no snapshot; aplicação ao produto ainda depende de comprovação':officialNcm?.code===ncm&&!dateWithinNcm?'Data da operação fora da vigência indicada na tabela NCM consultada; verifique histórico oficial':ncm?'Código informado ou sugerido, ainda não conferido na NCM oficial':'NCM de 8 dígitos ainda não identificado';
+ const ncmTag=official?'Código verificado':ncmMatchesCurated?'Sugestão do catálogo':ncm?'Informado':'Pendente';
+ const ncmState=official?'known':ncmMatchesCurated?'hypothesis':'';
+ const cestTag=cestExternal?'Vínculo NCM–CEST selecionado':cestMatchesCurated?'Referência do catálogo':cest?'Informado':'Pendente';
+ const cestState=(cestExternal||cestMatchesCurated)?'hypothesis':'';
+ const ncmValue=ncm?engine.ncmFmt(ncm):productAnalysis?.ncmGroup?'Família NCM '+productAnalysis.ncmGroup:'Não identificado';
+ const cestValue=cest?engine.cestFmt(cest):'Não identificado / não aplicável ainda não confirmado';
+ const simStatus=currentBuyer?.simplesNacional===true?'Optante do Simples Nacional':currentBuyer?.simplesNacional===false?'Não optante do Simples Nacional':'Não confirmado';
+ const isChecked=!!currentBuyer && currentBuyer.simplesNacional!==null && typeof currentBuyer.simplesNacional==='boolean';
+ sec('1. Identificação e classificação do produto',[
+  {label:'Descrição comercial',value:product,tag:'Informado'},
+  {label:'NCM',value:ncmValue,tag:ncmTag,state:ncmState,note:ncmReg},
+  {label:'Descrição/posição NCM',value:official?officialNcm.hierarchy:'Sem hierarquia confirmada nesta consulta',tag:official?'Tabela oficial':'Pendente',state:official?'known':'',note:official?'Fonte: RFB / Sistema Classif (NCM vigente)':'Utilize a busca da tabela NCM oficial na etapa anterior'},
+  {label:'CEST',value:cestValue,tag:cestTag,state:cestState,note:cestExternal?'Compilação pública: '+cestExternal.descricao+' — '+cestExternal.segmento+'. Precisa confirmar a descrição no CONFAZ e a tributação por UF.':cestMatchesCurated?'Correspondência no catálogo curado com o Convênio ICMS 142/2018; exigência documental e aplicação por UF dependem da descrição':'NCM sozinho não determina CEST: verificar descrição, anexo e vigência'},
+  {label:'Segmento do CEST',value:cest?('Segmento '+cest.slice(0,2)+' (código informado)'):'Não identificado',tag:cest?'Indicativo':'Pendente',state:cest?'hypothesis':''},
+  {label:'TIPI / IPI',value:'Não calculado',tag:'Pendente',note:'Exige enquadramento válido na TIPI, tipo de operação, contribuinte e benefícios aplicáveis'},
+  {label:'GTIN / EAN / cEAN',value:'Não informado',tag:'Pendente',note:'Pode ser recuperado do XML/GTIN do fabricante quando disponível'},
+  {label:'Origem fiscal da mercadoria',value:'Não confirmada',tag:'Pendente',note:'Nacional/importada e conteúdo de importação podem alterar ICMS/CST'},
+  {label:'Referência temporal',value:$('operationDate').value||'Sem data',tag:'Informado',note:'A tabela de NCM carregada é a versão vigente; consultar histórico para operações de outras vigências'}
+ ]);
+ 
+ const imported=currentXmlEvidence();
+ if(imported){
+  const m=imported.icms,p=imported.pis,c=imported.cofins,ipi=imported.ipi,bc=imported.ibscbs;
+  const xmlRow=(label,value,note)=>({label,value:value||'Não destacado no XML',tag:'Extraído do XML local',state:'hypothesis',note:note||'Declaração do XML de origem; não foi validada assinatura ou autenticidade'});
+  sec('2. Histórico fiscal encontrado na NF-e de origem',[
+   xmlRow('CFOP da NF-e do fornecedor',imported.cfop,'É o código da operação original. A entrada no comprador e uma nova venda exigem CFOP próprios.'),
+   xmlRow('CST / CSOSN ICMS original',m.code,m.name||'Não identificado'),
+   xmlRow('Origem ICMS',m.origin,'Conferir a origem da mercadoria'),
+   xmlRow('ICMS — base da origem',m.base),xmlRow('ICMS — alíquota da origem',m.rate),xmlRow('ICMS — valor da origem',m.amount),
+   xmlRow('ICMS-ST desta NF-e — base',m.baseST),xmlRow('ICMS-ST desta NF-e — alíquota',m.rateST),xmlRow('ICMS-ST desta NF-e — valor',m.valueST),
+   xmlRow('ICMS-ST retido antes — base',m.baseSTRet),xmlRow('ICMS-ST retido antes — alíquota',m.rateSTRet),xmlRow('ICMS-ST retido antes — valor',m.valueSTRet),
+   xmlRow('IPI — código CST',ipi.code),xmlRow('IPI — alíquota',ipi.rate),xmlRow('IPI — valor',ipi.amount),
+   xmlRow('PIS — código CST',p.code),xmlRow('PIS — valor',p.amount),
+   xmlRow('COFINS — código CST',c.code),xmlRow('COFINS — valor',c.amount),
+   xmlRow('IBS/CBS — CST no XML',bc.code),xmlRow('IBS/CBS — cClassTrib no XML',bc.cClassTrib),
+   xmlRow('Código do benefício fiscal original',imported.cbenef),
+   xmlRow('GTIN / EAN original',imported.gtin),xmlRow('Ex TIPI original',imported.exTipi)
+  ]);
+ }
+
+sec('2. Tributos e natureza da operação',[
+  {label:'Tipo de operação',value:roleName+' • '+$('originUf').value+' → '+$('destUf').value,tag:'Informado'},
+  {label:'Finalidade',value:$('use').selectedOptions[0].textContent,tag:'Informado'},
+  {label:'CFOP',value:cfopAnalysis?.code?cfopAnalysis.code+' — hipótese, não homologada':'Não determinado',tag:cfopAnalysis?.code?'Hipótese condicional':'Pendente',state:cfopAnalysis?.code?'hypothesis':'',note:cfopAnalysis?.explanation||'Regime, natureza, ST e legislação exigem conferência'},
+  {label:'Regime do comprador',value:simStatus,tag:isChecked?'Retorno de intermediário':'Pendente',state:isChecked?'hypothesis':'',note:isChecked?'Condição Simples Nacional obtida por integrador; fonte e data exigem conferência':'Não presumir Lucro Real ou Presumido pela ausência no Simples'},
+  {label:'Regime do vendedor',value:currentSeller?.simplesNacional===true?'Optante do Simples Nacional':currentSeller?.simplesNacional===false?'Não optante pelo Simples Nacional':'Não confirmado',tag:currentSeller?'Retorno de intermediário':'Pendente',state:currentSeller?'hypothesis':''},
+  {label:'ICMS-ST',value:$('stEvidence').selectedOptions[0].textContent,tag:'Declarado; não verificado',state:'hypothesis',note:'ST efetiva requer UF, segmento, protocolo, modalidade, remetente, destinatário e responsável'},
+  unsure('ICMS — CST/CSOSN','Depende dos regimes, situação e origem do item, finalidade e CFOP'),
+  unsure('ICMS — base de cálculo','Exige valor, alíquota, reduções, benefícios e regras estaduais'),
+  unsure('ICMS — alíquota, valor e crédito','Exige apuração da operação por origem, destino, contribuinte e vigência'),
+  unsure('ICMS-ST — MVA / PMPF / pauta','Exige regras específicas de produto, período, origem/destino, segmento e responsável'),
+  unsure('DIFAL / FCP','Avaliar contribuinte, consumidor final, UF e demais requisitos'),
+  unsure('IPI — CST, base e alíquota','Depende do enquadramento, TIPI e da operação'),
+  unsure('PIS / COFINS — CST e alíquotas','Depende do regime, produto, incidência e tratamentos especiais'),
+  unsure('IBS / CBS — CST e cClassTrib','Depende da classificação tributária vigente e da operação em 2026'),
+  unsure('IBS / CBS — base, alíquota e valor','Exige condições legais da operação e vigência; não inventar valores'),
+  unsure('cBenef e desoneração','Depende de eventual benefício fiscal por UF e data'),
+  unsure('CFOP correspondente na outra parte','A escrituração de entrada do comprador não é sempre simétrica à saída do fornecedor')
+ ]);
+
+ const involvedStates=[...new Set([$('originUf').value,$('destUf').value])].filter(x=>x==='MG'||x==='GO');
+ if(involvedStates.length){
+  const legal=document.createElement('section');legal.className='fiscal-group';
+  const header=document.createElement('h3');header.textContent='3. Legislação estadual a conferir — origem e destino';
+  legal.appendChild(header);
+  const links={
+    MG:{title:'Minas Gerais — RICMS 2023, anexos e substituição tributária',url:'https://www.fazenda.mg.gov.br/empresas/legislacao_tributaria/ricms_2023_seco/sumario2023seco.html'},
+    GO:{title:'Goiás — compilação da legislação tributária e RCTE/Anexo VIII',url:'https://goias.gov.br/economia/legislacao-tributaria/'}
+  };
+  const body=document.createElement('div');body.style.cssText='padding:12px 14px;font-size:13px;display:grid;gap:10px';
+  for(const uf of involvedStates){
+   const item=document.createElement('div');
+   const link=document.createElement('a');link.href=links[uf].url;link.target='_blank';link.rel='noopener noreferrer';
+   link.textContent=links[uf].title;
+   item.append(link);body.appendChild(item);
+  }
+  const caution=document.createElement('p');caution.textContent='Fontes oficiais para conferência humana. O aplicativo não calcula automaticamente MVA/PMPF, pauta, protocolos interestaduais ou alíquotas dessas normas nesta versão.';
+  body.appendChild(caution);legal.appendChild(body);root.appendChild(legal);
+ }
+
+ const notice=document.createElement('p');notice.className='warning';
+ notice.textContent='Situação: ficha informativa, NÃO homologada para emissão de NF-e. O NCM oficial confirma apenas códigos existentes; CEST e CFOP demandam confronto com o produto e com a operação. Campos pendentes não são tributos calculados.';
+ root.appendChild(notice);
+}
+
+
+let crossCheckId=0;
+async function checkNcmCestForOperation(ncm,cest,when){
+ const nonce=++crossCheckId;
+ const output=$('fiscalCrossCheck');
+ output.className='warning';
+ output.textContent='Conferindo códigos na tabela oficial NCM e nos vínculos públicos CEST…';
+ const checkNcm=/^\d{8}$/.test(ncm);
+ const checkCest=/^\d{7}$/.test(cest);
+ const tasks=[
+  checkNcm?ncmGet('code',{code:ncm}):Promise.resolve(null),
+  checkNcm&&checkCest?ncmGet('cest-by-ncm',{ncm}):Promise.resolve(null),
+  checkCest?ncmGet('cest-code',{code:cest}):Promise.resolve(null)
+ ];
+ const results=await Promise.allSettled(tasks);
+ if(nonce!==crossCheckId || step!==4 || $('ncm').value.trim()!==ncm || $('cest').value.trim()!==cest)return;
+ const lines=['CONFERÊNCIA DOCUMENTAL AUTOMATIZADA (não é homologação tributária)'];
+ let foundNcm=false,foundCest=false,pairFound=false;
+ if(!checkNcm){lines.push('NCM: pendente — é necessário código de 8 dígitos.')}
+ else if(results[0].status==='fulfilled'){
+   const entry=results[0].value.entry||{};
+   foundNcm=true;
+   const activeForDate=!when||((!entry.data_inicio||when>=entry.data_inicio)&&(!entry.data_fim||when<=entry.data_fim));
+   lines.push('NCM '+ncm+': existe na base oficial RFB/Classif.'+(activeForDate?' Data compatível com o registro consultado.':' ATENÇÃO: data fora da vigência do registro consultado.'));
+   lines.push('Descrição oficial do código: '+ncmDescr(entry.descricao||'Consulte a hierarquia na pesquisa NCM.'));
+   if(!activeForDate)foundNcm=false;
+ }else{const error=results[0].reason;
+   lines.push('NCM '+ncm+': '+(error?.status===404?'NÃO ENCONTRADO na tabela oficial consultada.':'consulta indisponível; não foi possível verificar.'))}
+ if(!checkCest){lines.push('CEST: não informado; isso não comprova ausência de substituição tributária.')}
+ else if(results[2].status==='fulfilled'){
+   const entry=results[2].value.item||{};
+   foundCest=true;
+   lines.push('CEST '+cest+': consta na compilação pública como "'+(entry.descricao||'?')+'".');
+ }else{
+   const error=results[2].reason;
+   lines.push('CEST '+cest+': '+(error?.status===404?'não localizado na compilação disponível.':'pesquisa temporariamente indisponível.'))}
+ if(checkNcm&&checkCest&&results[1].status==='fulfilled'){
+   const options=results[1].value.items||[];
+   pairFound=options.some(o=>o.cest===cest);
+   lines.push(pairFound?'Vínculo NCM–CEST: CONSTA na compilação de terceiros (NCM/SH compatível).':'Vínculo NCM–CEST: NÃO CONSTA na compilação consultada. Verifique a descrição e o CONFAZ; ausência não prova incorreção.');
+ }else if(checkNcm&&checkCest){lines.push('Vínculo NCM–CEST: ainda não verificado.')}
+ if(foundNcm&&(!checkCest || (foundCest&&pairFound)))output.className='warning good';
+ lines.push('Resultado fiscal da operação: NÃO HOMOLOGADO. O vínculo CEST não define ST; confirme Convênio 142/18, legislação MG/GO, regime, finalidade, data e responsabilidade do imposto.');
+ output.textContent=lines.join('\n');
+}
+
+$('next3').onclick=()=>{let product=$('product').value.trim(),ncm=$('ncm').value.trim(),cest=$('cest').value.trim();if(!product){msg('Digite o nome do produto.');return}if(ncm&&!/^\d{8}$/.test(ncm)){msg('O NCM deve ter 8 dígitos.');return}if(cest&&!/^\d{7}$/.test(cest)){msg('O CEST deve ter 7 dígitos.');return}
+const fiscalEngine=window.FORTE_CLASSIFICACAO;
+const productAnalysis=fiscalEngine?fiscalEngine.suggest(product,ncm):null;
+const cfopAnalysis=fiscalEngine?fiscalEngine.cfop({operation:op,originUf:$('originUf').value,destUf:$('destUf').value,purpose:$('use').value,stEvidence:$('stEvidence').value,sellerSource:$('sellerSource').value,buyerIsContributor:$('buyerContributor').value,consultantKind:profile,otherKind:otherKind}):{code:"",status:"pendente",explanation:"Motor fiscal indisponível.",assumptions:[]};
+const data=[['Tipo de consultante',profile==='company'?'Empresa CNPJ':profile==='rural'?'Produtor rural com CPF e IE':'Pessoa física'],['Cadastro próprio',currentResult('own')?'Retorno de intermediário; fonte e data abaixo':profile==='company'?'CNPJ salvo; cadastro não confirmado':'Dados informados pelo visitante; validados apenas no formato'],['Operação',op==='entrada'?'Compra / entrada':'Venda / saída'],['Origem e destino',$('originUf').value+' → '+$('destUf').value],[op==='entrada'?'Tipo do fornecedor':'Tipo do comprador',otherKind==='rural'?'Produtor rural com CPF e IE':otherKind==='person'?'Pessoa física com CPF':'Empresa com CNPJ'],
+[op==='entrada'?'Documento do fornecedor':'Documento do comprador',currentResult('other')?'Retorno de intermediário; fonte e data abaixo':$('otherDoc').value?'Informado e validado apenas no formato. Cadastro ainda não verificado.':'Não informado'],
+['Inscrição estadual da outra parte',otherKind==='rural'?'IE declarada na UF '+$('otherIeUf').value+'; situação cadastral não verificada':otherKind==='company'&&$('otherIe').value.trim()?'IE informada; situação cadastral não verificada':'Não informada ou não aplicável'],['Produto',product],['NCM',ncm?(fiscalEngine?fiscalEngine.ncmFmt(ncm):ncm)+(officialNcm?.code===ncm?' — código existente na tabela oficial; enquadramento do produto não confirmado':' — não conferido na tabela oficial nesta consulta'):'Não identificado'],
+['Hierarquia da NCM',officialNcm?.code===ncm?officialNcm.hierarchy:'Não conferida'],
+['CEST',cest?(fiscalEngine?fiscalEngine.cestFmt(cest):cest)+' — não confirma incidência de ST':'Não identificado / não confirmado'],
+['Origem da sugestão',productAnalysis?productAnalysis.name+' — '+productAnalysis.precision:'Fora do catálogo'],
+['Finalidade',$('use').selectedOptions[0].text],
+['Data considerada',$('operationDate').value||'Não informada'],
+['Situação ICMS-ST',$('stEvidence').selectedOptions[0].text+' — exige verificação por UF e destinatário'],
+['CFOP possível',cfopAnalysis.code?cfopAnalysis.code+' (hipótese condicionada)':'Pendente de validação'],
+['Condição para o CFOP',cfopAnalysis.explanation],
+['CST / CSOSN','Pendente: origem, regime e tratamento estadual'],
+['PIS / COFINS','Pendente: regime tributário e incidência'],
+['IBS / CBS','Pendente: classificação específica, vigência e cClassTrib'],
+['Base e alíquota do ICMS','Pendente: UF, origem, benefícios, ST, pauta ou MVA, quando aplicável'],
+['Regime federal','Não confirmado por fonte oficial']];
+$('summary').replaceChildren();let table=document.createElement('table');table.className='table';data.forEach(item=>{let row=table.insertRow(),a=row.insertCell(),b=row.insertCell();a.textContent=item[0];b.textContent=item[1]});$('summary').appendChild(table);buildFiscalDossier(product,ncm,cest,productAnalysis,cfopAnalysis);goto(4);checkNcmCestForOperation(ncm,cest,$('operationDate').value);
+$('fiscalReview').textContent=cfopAnalysis.code?'CFOP sugerido sob hipóteses: '+cfopAnalysis.code+'. '+cfopAnalysis.explanation+' Pressupostos: '+(cfopAnalysis.assumptions||[]).join('; ')+'. Uso fiscal somente após conferência documental e legal.':'Classificação fiscal pendente. '+cfopAnalysis.explanation+' Consulte NCM/CEST oficiais e legislação específica da origem/destino antes de emitir ou escriturar.';
+ for(const [who,label] of [['own','Consulta do cadastro próprio'],['other','Consulta da outra parte']]){const result=currentResult(who);if(result){const row=table.insertRow();row.insertCell().textContent=label;row.insertCell().textContent=statusSummary(result)+'\nIE digitada/escolhida deve corresponder ao retorno; CFOP e ICMS-ST permanecem pendentes.';}}
+ const cleanProduct=product.slice(0,90);
+ const purpose=$('use').value==='particular'?'consumo':$('use').value;
+ const route=$('originUf').value+' → '+$('destUf').value;
+ const payload={operation:op,product:cleanProduct,route:route,routeProduct:route+' / '+cleanProduct,purpose:purpose,status:'pendente',cfop:'Pendente',regime:'indefinido',st:'indefinido',buyerKind:op==='entrada'?'empresa':'comprador',buyerTaxStatus:'indefinido'};
+ if(ncm)payload.ncm=ncm;
+ if(profile==='company'&&$('insights').checked)payload.company={cnpj:alpha($('ownCnpj').value),name:$('ownName').value.trim()||null};
+ const note=document.createElement('p');note.className='muted';note.textContent='Registrando estatísticas de consulta (sem documentos de terceiros)...';$('summary').appendChild(note);
+ if(xmlDocument){note.textContent='Arquivo XML utilizado: nenhuma informação desta consulta foi enviada às estatísticas da FORTECOMPANNY.';return;}
+ fetch(BASE+'/api/consult',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)})
+  .then(async res=>{if(!res.ok)throw Error('HTTP '+res.status);note.textContent='Consulta agregada registrada para inteligência comercial.'})
+  .catch(()=>{note.textContent='Estatísticas temporariamente indisponíveis; o resumo permanece válido como demonstração.'});
+};
+$('printDossier').onclick=()=>window.print();
+$('legacy').onclick=()=>location.assign('/');
+['ownCnpj','ownCpf','ownUf','ownIncludeIe','ownRuralConsent'].forEach(id=>$(id).addEventListener('change',()=>invalidate('own')));
+['otherDoc','otherIeUf','otherIncludeIe','otherRuralConsent'].forEach(id=>$(id).addEventListener('change',()=>invalidate('other')));
+['ownCnpj','ownCpf'].forEach(id=>$(id).addEventListener('input',()=>invalidate('own')));
+$('otherDoc').addEventListener('input',()=>invalidate('other'));
+})();
+</script></body></html>
