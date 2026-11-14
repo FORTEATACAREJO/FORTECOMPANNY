@@ -6,7 +6,7 @@ const manifest=JSON.parse(read('../manifest.json'));
 const other=JSON.parse(read('../manifest.webmanifest'));
 const pricing=JSON.parse(read('../commercial-config.json'));
 test('Marca FORTECOMPANNY+ IA aparece nas principais telas e no PWA',()=>{
- for(const path of ['../index.html','../assistente.html','../consulta-nfe.html'])assert.match(read(path),/FORTECOMPANNY\\+ IA/);
+ for(const path of ['../index.html','../assistente.html','../consulta-nfe.html'])assert.match(read(path),/FORTECOMPANNY\+ IA/);
  assert.equal(manifest.name,'FORTECOMPANNY+ IA — Consulta Fiscal');
  assert.equal(manifest.short_name,'FORTECOMPANNY+ IA');
  assert.equal(other.name,manifest.name);
