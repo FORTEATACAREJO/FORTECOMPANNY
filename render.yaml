@@ -1,0 +1,14 @@
+# Planejado para ADOTAR o serviço existente no Render, sem criar outro.
+# Aplicar somente após revisar plano sem cobrança nem criação adicional.
+services:
+  - type: web
+    runtime: static
+    name: forte-tech-cfop-publico
+    repo: https://github.com/FORTEATACAREJO/FORTECOMPANNY
+    branch: main
+    buildCommand: "echo build-ready"
+    staticPublishPath: cfop-public-site
+    autoDeployTrigger: commit
+    renderSubdomainPolicy: enabled
+    domains:
+      - fortecompanny.com.br
