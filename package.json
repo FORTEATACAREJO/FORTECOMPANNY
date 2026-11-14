@@ -1,0 +1,16 @@
+{
+  "name": "fortecompanny",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node cfop-public-site/pre-nota-testes.cjs && node --test cfop-public-site/tests/cadastros.test.mjs cfop-public-site/tests/assistente-dom.test.mjs",
+    "check": "node --check cfop-public-site/classificacao.js && node --check cfop-public-site/pre-nota-engine.js && node --check cfop-public-site/xml-nfe-local.js && node --check cfop-public-site/sw.js"
+  },
+  "devDependencies": {
+    "jsdom": "26.1.0"
+  }
+}

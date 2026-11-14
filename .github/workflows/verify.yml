@@ -1,0 +1,22 @@
+name: Verificar FORTECOMPANNY
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Dependências de teste
+        run: npm install --no-audit --no-fund --ignore-scripts
+      - name: Verificar JavaScript
+        run: npm run check
+      - name: Verificar CFOP, pré-nota e cadastros
+        run: npm test
